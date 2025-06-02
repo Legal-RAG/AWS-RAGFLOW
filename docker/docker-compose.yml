@@ -33,6 +33,8 @@ services:
       - ../history_data_agent:/ragflow/history_data_agent
       - ./service_conf.yaml.template:/ragflow/conf/service_conf.yaml.template
       - ./entrypoint.sh:/ragflow/entrypoint.sh
+      - /mnt/ragflow-data:/ragflow/storage
+      - /home/ec2-user/ragflow/conf/local.yaml:/app/conf/local.yaml	 
 
     env_file: .env
     environment:
@@ -46,25 +48,31 @@ services:
     # If you're using Docker Desktop, the --add-host flag is optional. This flag makes sure that the host's internal IP gets exposed to the Prometheus container.
     extra_hosts:
       - "host.docker.internal:host-gateway"
-  # executor:
-  #   depends_on:
-  #     mysql:
-  #       condition: service_healthy
-  #   image: ${RAGFLOW_IMAGE}
-  #   container_name: ragflow-executor
-  #   volumes:
-  #     - ./ragflow-logs:/ragflow/logs
-  #     - ./nginx/ragflow.conf:/etc/nginx/conf.d/ragflow.conf
-  #   env_file: .env
-  #   environment:
-  #     - TZ=${TIMEZONE}
-  #     - HF_ENDPOINT=${HF_ENDPOINT}
-  #     - MACOS=${MACOS}
-  #   entrypoint: "/ragflow/entrypoint_task_executor.sh 1 3"
-  #   networks:
-  #     - ragflow
-  #   restart: on-failure
-  #   # https://docs.docker.com/engine/daemon/prometheus/#create-a-prometheus-configuration
-  #   # If you're using Docker Desktop, the --add-host flag is optional. This flag makes sure that the host's internal IP gets exposed to the Prometheus container.
-  #   extra_hosts:
-  #     - "host.docker.internal:host-gateway"
+ 
+  executor:
+    depends_on:
+      mysql:
+        condition: service_healthy
+    image: ${RAGFLOW_IMAGE}
+    container_name: ragflow-executor
+    volumes:
+      - ./ragflow-logs:/ragflow/logs
+      - ./nginx/ragflow.conf:/etc/nginx/conf.d/ragflow.conf
+      - /mnt/ragflow-data:/ragflow/storage
+      - /home/ec2-user/ragflow/conf/local.yaml:/app/conf/local.yaml
+      - ./entrypoint_task_executor.sh:/ragflow/entrypoint_task_executor.sh
+
+    env_file: .env
+    environment:
+      - TZ=${TIMEZONE}
+      - HF_ENDPOINT=${HF_ENDPOINT}
+      - MACOS=${MACOS}
+    entrypoint: "/ragflow/entrypoint.sh --disable-webserver --workers=2"
+
+
+
+    networks:
+      - ragflow
+    restart: on-failure
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
