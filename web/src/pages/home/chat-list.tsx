@@ -1,8 +1,8 @@
-import { useFetchDialogList } from '@/hooks/use-chat-request';
+import { useFetchNextDialogList } from '@/hooks/chat-hooks';
 import { ApplicationCard } from './application-card';
 
 export function ChatList() {
-  const { data } = useFetchDialogList(true);
+  const { data } = useFetchNextDialogList();
 
   return data
     .slice(0, 10)

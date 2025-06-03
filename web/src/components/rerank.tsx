@@ -4,8 +4,7 @@ import { useSelectLlmOptionsByModelType } from '@/hooks/llm-hooks';
 import { Select as AntSelect, Form, message, Slider } from 'antd';
 import { useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { z } from 'zod';
-import { SliderInputFormField } from './slider-input-form-field';
+import { SingleFormSlider } from './ui/dual-range-slider';
 import {
   FormControl,
   FormField,
@@ -62,14 +61,6 @@ export const RerankItem = () => {
       </Form.Item>
     </>
   );
-};
-
-export const topKSchema = {
-  top_k: z.number().optional(),
-};
-
-export const initialTopKValue = {
-  top_k: 1024,
 };
 
 const Rerank = () => {
@@ -152,7 +143,7 @@ function RerankFormField() {
 }
 
 export function RerankFormFields() {
-  const { watch } = useFormContext();
+  const { control, watch } = useFormContext();
   const { t } = useTranslate('knowledgeDetails');
   const rerankId = watch(RerankId);
 
@@ -160,13 +151,23 @@ export function RerankFormFields() {
     <>
       <RerankFormField></RerankFormField>
       {rerankId && (
-        <SliderInputFormField
+        <FormField
+          control={control}
           name={'top_k'}
-          label={t('topK')}
-          max={2048}
-          min={1}
-          tooltip={t('topKTip')}
-        ></SliderInputFormField>
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel tooltip={t('topKTip')}>{t('topK')}</FormLabel>
+              <FormControl>
+                <SingleFormSlider
+                  {...field}
+                  max={2048}
+                  min={1}
+                ></SingleFormSlider>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
       )}
     </>
   );

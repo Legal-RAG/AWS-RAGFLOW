@@ -1,8 +1,9 @@
 import {
+  DSLComponents,
   ICategorizeItem,
   ICategorizeItemResult,
-} from '@/interfaces/database/agent';
-import { DSLComponents, RAGFlowNodeType } from '@/interfaces/database/flow';
+  RAGFlowNodeType,
+} from '@/interfaces/database/flow';
 import { removeUselessFieldsFromValues } from '@/utils/form';
 import { Edge, Node, Position, XYPosition } from '@xyflow/react';
 import { FormInstance, FormListFieldData } from 'antd';
@@ -390,22 +391,6 @@ export const generateDuplicateNode = (
   };
 };
 
-export function convertToStringArray(
-  list?: Array<{ value: string | number | boolean }>,
-) {
-  if (!Array.isArray(list)) {
-    return [];
-  }
-  return list.map((x) => x.value);
-}
-
-export function convertToObjectArray(list: Array<string | number | boolean>) {
-  if (!Array.isArray(list)) {
-    return [];
-  }
-  return list.map((x) => ({ value: x }));
-}
-
 /**
    * convert the following object into a list
    * 
@@ -426,11 +411,7 @@ export const buildCategorizeListFromObject = (
     .reduce<Array<ICategorizeItem>>((pre, cur) => {
       // synchronize edge data to the to field
 
-      pre.push({
-        name: cur,
-        ...categorizeItem[cur],
-        examples: convertToObjectArray(categorizeItem[cur].examples),
-      });
+      pre.push({ name: cur, ...categorizeItem[cur] });
       return pre;
     }, [])
     .sort((a, b) => a.index - b.index);
@@ -443,7 +424,7 @@ export const buildCategorizeListFromObject = (
       {
         "name": "Categorize 1",
         "description": "111",
-        "examples": ["ddd"],
+        "examples": "ddd",
         "to": "Retrieval:LazyEelsStick"
       }
      ]
@@ -452,10 +433,7 @@ export const buildCategorizeListFromObject = (
 export const buildCategorizeObjectFromList = (list: Array<ICategorizeItem>) => {
   return list.reduce<ICategorizeItemResult>((pre, cur) => {
     if (cur?.name) {
-      pre[cur.name] = {
-        ...omit(cur, 'name', 'examples'),
-        examples: convertToStringArray(cur.examples),
-      };
+      pre[cur.name] = omit(cur, 'name');
     }
     return pre;
   }, {});

@@ -13,7 +13,6 @@ export interface IThirdOAIModel {
   update_time: number;
   tenant_id?: string;
   tenant_name?: string;
-  is_tools: boolean;
 }
 
 export type IThirdOAIModelCollection = Record<string, IThirdOAIModel[]>;

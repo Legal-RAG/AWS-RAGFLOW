@@ -3,7 +3,6 @@ import { ISwitchCondition, ISwitchNode } from '@/interfaces/database/flow';
 import { Handle, NodeProps, Position } from '@xyflow/react';
 import { Divider, Flex } from 'antd';
 import classNames from 'classnames';
-import { memo } from 'react';
 import { useGetComponentLabelByValue } from '../../hooks/use-get-begin-query';
 import { RightHandleStyle } from './handle-icon';
 import { useBuildSwitchHandlePositions } from './hooks';
@@ -55,7 +54,7 @@ const ConditionBlock = ({
   );
 };
 
-function InnerSwitchNode({ id, data, selected }: NodeProps<ISwitchNode>) {
+export function SwitchNode({ id, data, selected }: NodeProps<ISwitchNode>) {
   const { positions } = useBuildSwitchHandlePositions({ data, id });
   const { theme } = useTheme();
   return (
@@ -113,5 +112,3 @@ function InnerSwitchNode({ id, data, selected }: NodeProps<ISwitchNode>) {
     </section>
   );
 }
-
-export const SwitchNode = memo(InnerSwitchNode);

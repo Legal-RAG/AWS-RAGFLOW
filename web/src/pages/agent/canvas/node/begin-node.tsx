@@ -4,7 +4,6 @@ import { Handle, NodeProps, Position } from '@xyflow/react';
 import { Flex } from 'antd';
 import classNames from 'classnames';
 import get from 'lodash/get';
-import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   BeginQueryType,
@@ -18,7 +17,7 @@ import { RightHandleStyle } from './handle-icon';
 import styles from './index.less';
 
 // TODO: do not allow other nodes to connect to this node
-function InnerBeginNode({ selected, data }: NodeProps<IBeginNode>) {
+export function BeginNode({ selected, data }: NodeProps<IBeginNode>) {
   const { t } = useTranslation();
   const query: BeginQuery[] = get(data, 'form.query', []);
   const { theme } = useTheme();
@@ -71,5 +70,3 @@ function InnerBeginNode({ selected, data }: NodeProps<IBeginNode>) {
     </section>
   );
 }
-
-export const BeginNode = memo(InnerBeginNode);

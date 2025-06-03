@@ -22,7 +22,7 @@ const getVariableName = (type: string) =>
   type === VariableType.Reference ? 'component_id' : 'value';
 
 const DynamicVariableForm = ({ name: formName, node }: IProps) => {
-  const nextFormName = formName || 'query';
+  formName = formName || 'query';
   const { t } = useTranslation();
   const valueOptions = useBuildComponentIdSelectOptions(
     node?.id,
@@ -38,15 +38,15 @@ const DynamicVariableForm = ({ name: formName, node }: IProps) => {
   const handleTypeChange = useCallback(
     (name: number) => () => {
       setTimeout(() => {
-        form.setFieldValue([nextFormName, name, 'component_id'], undefined);
-        form.setFieldValue([nextFormName, name, 'value'], undefined);
+        form.setFieldValue([formName, name, 'component_id'], undefined);
+        form.setFieldValue([formName, name, 'value'], undefined);
       }, 0);
     },
-    [form, nextFormName],
+    [form],
   );
 
   return (
-    <Form.List name={nextFormName}>
+    <Form.List name={formName}>
       {(fields, { add, remove }) => (
         <>
           {fields.map(({ key, name, ...restField }) => (
@@ -63,7 +63,7 @@ const DynamicVariableForm = ({ name: formName, node }: IProps) => {
               </Form.Item>
               <Form.Item noStyle dependencies={[name, 'type']}>
                 {({ getFieldValue }) => {
-                  const type = getFieldValue([nextFormName, name, 'type']);
+                  const type = getFieldValue([formName, name, 'type']);
                   return (
                     <Form.Item
                       {...restField}

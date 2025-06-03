@@ -1,5 +1,3 @@
-import { LlmSettingSchema } from '@/components/llm-setting-items/next';
-import { CodeTemplateStrMap, ProgrammingLanguage } from '@/constants/agent';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 import { Operator } from '../constant';
@@ -11,7 +9,6 @@ import BaiduForm from '../form/baidu-form';
 import BeginForm from '../form/begin-form';
 import BingForm from '../form/bing-form';
 import CategorizeForm from '../form/categorize-form';
-import CodeForm from '../form/code-form';
 import CrawlerForm from '../form/crawler-form';
 import DeepLForm from '../form/deepl-form';
 import DuckDuckGoForm from '../form/duckduckgo-form';
@@ -46,27 +43,18 @@ export function useFormConfigMap() {
       component: BeginForm,
       defaultValues: {},
       schema: z.object({
-        enablePrologue: z.boolean().optional(),
-        prologue: z
+        name: z
           .string()
           .min(1, {
             message: t('common.namePlaceholder'),
           })
-          .trim()
-          .optional(),
-        mode: z.string(),
-        query: z
-          .array(
-            z.object({
-              key: z.string(),
-              type: z.string(),
-              value: z.string(),
-              optional: z.boolean(),
-              name: z.string(),
-              options: z.array(z.union([z.number(), z.string(), z.boolean()])),
-            }),
-          )
-          .optional(),
+          .trim(),
+        age: z
+          .string()
+          .min(1, {
+            message: t('common.namePlaceholder'),
+          })
+          .trim(),
       }),
     },
     [Operator.Retrieval]: {
@@ -111,40 +99,20 @@ export function useFormConfigMap() {
     },
     [Operator.Categorize]: {
       component: CategorizeForm,
-      defaultValues: {},
+      defaultValues: { message_history_window_size: 1 },
       schema: z.object({
-        parameter: z.string().optional(),
-        ...LlmSettingSchema,
-        message_history_window_size: z.coerce.number(),
+        message_history_window_size: z.number(),
         items: z.array(
-          z
-            .object({
-              name: z.string().min(1, t('flow.nameMessage')).trim(),
-              description: z.string().optional(),
-              // examples: z
-              //   .array(
-              //     z.object({
-              //       value: z.string(),
-              //     }),
-              //   )
-              //   .optional(),
-            })
-            .optional(),
+          z.object({
+            name: z.string().min(1, t('flow.nameMessage')).trim(),
+          }),
         ),
       }),
     },
     [Operator.Message]: {
       component: MessageForm,
       defaultValues: {},
-      schema: z.object({
-        content: z
-          .array(
-            z.object({
-              value: z.string(),
-            }),
-          )
-          .optional(),
-      }),
+      schema: z.object({}),
     },
     [Operator.Relevant]: {
       component: RelevantForm,
@@ -160,36 +128,6 @@ export function useFormConfigMap() {
         llm_id: z.string(),
         message_history_window_size: z.number(),
         language: z.string(),
-      }),
-    },
-    [Operator.Code]: {
-      component: CodeForm,
-      defaultValues: {
-        lang: ProgrammingLanguage.Python,
-        script: CodeTemplateStrMap[ProgrammingLanguage.Python],
-        arguments: [],
-      },
-      schema: z.object({
-        lang: z.string(),
-        script: z.string(),
-        arguments: z.array(
-          z.object({ name: z.string(), component_id: z.string() }),
-        ),
-        return: z.union([
-          z
-            .array(z.object({ name: z.string(), component_id: z.string() }))
-            .optional(),
-          z.object({ name: z.string(), component_id: z.string() }),
-        ]),
-      }),
-    },
-    [Operator.WaitingDialogue]: {
-      component: CodeForm,
-      defaultValues: {},
-      schema: z.object({
-        arguments: z.array(
-          z.object({ name: z.string(), component_id: z.string() }),
-        ),
       }),
     },
     [Operator.Baidu]: {

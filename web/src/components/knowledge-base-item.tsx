@@ -10,17 +10,13 @@ import { FormControl, FormField, FormItem, FormLabel } from './ui/form';
 import { MultiSelect } from './ui/multi-select';
 
 interface KnowledgeBaseItemProps {
-  label?: string;
   tooltipText?: string;
-  name?: string;
   required?: boolean;
   onChange?(): void;
 }
 
 const KnowledgeBaseItem = ({
-  label,
   tooltipText,
-  name,
   required = true,
   onChange,
 }: KnowledgeBaseItemProps) => {
@@ -44,8 +40,8 @@ const KnowledgeBaseItem = ({
 
   return (
     <Form.Item
-      label={label || t('knowledgeBases')}
-      name={name || 'kb_ids'}
+      label={t('knowledgeBases')}
+      name="kb_ids"
       tooltip={tooltipText || t('knowledgeBasesTip')}
       rules={[
         {

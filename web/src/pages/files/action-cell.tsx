@@ -1,6 +1,13 @@
 import { ConfirmDeleteDialog } from '@/components/confirm-delete-dialog';
 import NewDocumentLink from '@/components/new-document-link';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { useDownloadFile } from '@/hooks/file-manager-hooks';
 import { IFile } from '@/interfaces/database/file-manager';
 import {
@@ -8,15 +15,9 @@ import {
   isSupportedPreviewDocumentType,
 } from '@/utils/document-util';
 import { CellContext } from '@tanstack/react-table';
-import {
-  ArrowDownToLine,
-  Eye,
-  FolderInput,
-  FolderPen,
-  Link2,
-  Trash2,
-} from 'lucide-react';
+import { EllipsisVertical, Eye, Link2, Trash2 } from 'lucide-react';
 import { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   UseHandleConnectToKnowledgeReturnType,
   UseRenameCurrentFileReturnType,
@@ -35,6 +36,7 @@ export function ActionCell({
   showFileRenameModal,
   showMoveFileModal,
 }: IProps) {
+  const { t } = useTranslation();
   const record = row.original;
   const documentId = record.id;
   const { downloadFile } = useDownloadFile();
@@ -61,43 +63,33 @@ export function ActionCell({
   }, [record, showMoveFileModal]);
 
   return (
-    <section className="flex gap-4 items-center text-text-sub-title-invert">
+    <section className="flex gap-4 items-center">
       <Button
         variant="ghost"
-        size={'sm'}
+        size={'icon'}
         onClick={handleShowConnectToKnowledgeModal}
       >
         <Link2 />
       </Button>
-      <Button variant="ghost" size={'sm'} onClick={handleShowMoveFileModal}>
-        <FolderInput />
-      </Button>
-
-      <Button variant="ghost" size={'sm'} onClick={handleShowFileRenameModal}>
-        <FolderPen />
-      </Button>
-
-      {isFolder || (
-        <Button variant={'ghost'} size={'sm'} onClick={onDownloadDocument}>
-          <ArrowDownToLine />
+      <ConfirmDeleteDialog>
+        <Button variant="ghost" size={'icon'}>
+          <Trash2 className="text-text-delete-red" />
         </Button>
-      )}
-
+      </ConfirmDeleteDialog>
       {isSupportedPreviewDocumentType(extension) && (
         <NewDocumentLink
           documentId={documentId}
           documentName={record.name}
-          className="text-text-sub-title-invert"
+          color="black"
         >
-          <Button variant={'ghost'} size={'sm'}>
+          <Button variant={'ghost'} size={'icon'}>
             <Eye />
           </Button>
         </NewDocumentLink>
       )}
-
-      {/* <DropdownMenu>
+      <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size={'sm'}>
+          <Button variant="ghost" size={'icon'}>
             <EllipsisVertical />
           </Button>
         </DropdownMenuTrigger>
@@ -116,12 +108,7 @@ export function ActionCell({
             </DropdownMenuItem>
           )}
         </DropdownMenuContent>
-      </DropdownMenu> */}
-      <ConfirmDeleteDialog>
-        <Button variant="ghost" size={'sm'}>
-          <Trash2 />
-        </Button>
-      </ConfirmDeleteDialog>
+      </DropdownMenu>
     </section>
   );
 }

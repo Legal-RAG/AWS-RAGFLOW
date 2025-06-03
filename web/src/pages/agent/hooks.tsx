@@ -40,7 +40,6 @@ import {
   initialBeginValues,
   initialBingValues,
   initialCategorizeValues,
-  initialCodeValues,
   initialConcentratorValues,
   initialCrawlerValues,
   initialDeepLValues,
@@ -142,7 +141,6 @@ export const useInitializeOperatorParams = () => {
       [Operator.Email]: initialEmailValues,
       [Operator.Iteration]: initialIterationValues,
       [Operator.IterationStart]: initialIterationValues,
-      [Operator.Code]: initialCodeValues,
     };
   }, [llmId]);
 
@@ -294,13 +292,7 @@ export const useHandleFormValuesChange = (
   useEffect(() => {
     const subscription = form?.watch((value, { name, type, values }) => {
       if (id && name) {
-        console.log(
-          '🚀 ~ useEffect ~ value:',
-          name,
-          type,
-          values,
-          operatorName,
-        );
+        console.log('🚀 ~ useEffect ~ value:', type, values);
         let nextValues: any = value;
 
         // Fixed the issue that the related form value does not change after selecting the freedom field of the model
@@ -326,10 +318,7 @@ export const useHandleFormValuesChange = (
             category_description: buildCategorizeObjectFromList(value.items),
           };
         }
-        // Manually triggered form updates are synchronized to the canvas
-        if (type) {
-          updateNodeForm(id, nextValues);
-        }
+        updateNodeForm(id, nextValues);
       }
     });
     return () => subscription?.unsubscribe();

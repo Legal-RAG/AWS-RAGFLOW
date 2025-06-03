@@ -10,10 +10,9 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Plus, X } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Separator } from '../ui/separator';
 
 export function DynamicPageRange() {
   const { t } = useTranslation();
@@ -32,7 +31,7 @@ export function DynamicPageRange() {
       {fields.map((field, index) => {
         const typeField = `parser_config.pages.${index}.from`;
         return (
-          <div key={field.id} className="flex items-center gap-2 pt-2">
+          <div key={field.id} className="flex items-center gap-1">
             <FormField
               control={form.control}
               name={typeField}
@@ -43,7 +42,6 @@ export function DynamicPageRange() {
                     <Input
                       type="number"
                       placeholder={t('common.pleaseInput')}
-                      className="!m-0"
                       {...field}
                     />
                   </FormControl>
@@ -51,7 +49,6 @@ export function DynamicPageRange() {
                 </FormItem>
               )}
             />
-            <Separator className="w-3 "></Separator>
             <FormField
               control={form.control}
               name={`parser_config.pages.${index}.to`}
@@ -62,7 +59,6 @@ export function DynamicPageRange() {
                     <Input
                       type="number"
                       placeholder={t('common.pleaseInput')}
-                      className="!m-0"
                       {...field}
                     />
                   </FormControl>
@@ -70,16 +66,18 @@ export function DynamicPageRange() {
                 </FormItem>
               )}
             />
-            <Button variant={'ghost'} onClick={() => remove(index)}>
-              <X />
-            </Button>
+            <Trash2
+              className="cursor-pointer mx-3 size-4 text-colors-text-functional-danger"
+              onClick={() => remove(index)}
+            />
           </div>
         );
       })}
       <Button
         onClick={() => append({ from: 1, to: 100 })}
-        className="mt-4 border-dashed w-full"
+        className="mt-4"
         variant={'outline'}
+        size={'sm'}
         type="button"
       >
         <Plus />

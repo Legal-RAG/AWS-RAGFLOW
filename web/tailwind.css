@@ -86,8 +86,6 @@
     --background-card: rgba(22, 22, 24, 0.05);
 
     --background-checked: rgba(76, 164, 231, 1);
-
-    --input-border: rgba(22, 22, 24, 0.2);
   }
 
   .dark {
@@ -194,8 +192,6 @@
 
     --background-card: rgba(255, 255, 255, 0.05);
     --background-checked: rgba(76, 164, 231, 1);
-
-    --input-border: rgba(255, 255, 255, 0.2);
   }
 }
 

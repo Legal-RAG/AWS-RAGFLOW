@@ -1,4 +1,3 @@
-import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { SingleFormSlider } from './ui/dual-range-slider';
@@ -19,7 +18,6 @@ type SliderInputFormFieldProps = {
   label: string;
   tooltip?: ReactNode;
   defaultValue?: number;
-  className?: string;
 };
 
 export function SliderInputFormField({
@@ -30,7 +28,6 @@ export function SliderInputFormField({
   name,
   tooltip,
   defaultValue,
-  className,
 }: SliderInputFormFieldProps) {
   const form = useFormContext();
 
@@ -41,24 +38,8 @@ export function SliderInputFormField({
       defaultValue={defaultValue}
       render={({ field }) => (
         <FormItem>
-          <FormLabel tooltip={tooltip}>{label}</FormLabel>
-          <div
-            className={cn(
-              'flex items-center gap-14 justify-between',
-              className,
-            )}
-          >
-            <FormControl>
-              <SingleFormSlider
-                {...field}
-                max={max}
-                min={min}
-                step={step}
-                // defaultValue={
-                //   typeof defaultValue === 'number' ? [defaultValue] : undefined
-                // }
-              ></SingleFormSlider>
-            </FormControl>
+          <div className="flex items-center justify-between">
+            <FormLabel tooltip={tooltip}>{label}</FormLabel>
             <FormControl>
               <Input
                 type={'number'}
@@ -71,6 +52,17 @@ export function SliderInputFormField({
               ></Input>
             </FormControl>
           </div>
+          <FormControl>
+            <SingleFormSlider
+              {...field}
+              max={max}
+              min={min}
+              step={step}
+              // defaultValue={
+              //   typeof defaultValue === 'number' ? [defaultValue] : undefined
+              // }
+            ></SingleFormSlider>
+          </FormControl>
           <FormMessage />
         </FormItem>
       )}

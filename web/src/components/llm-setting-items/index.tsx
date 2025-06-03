@@ -16,10 +16,9 @@ interface IProps {
   prefix?: string;
   formItemLayout?: any;
   handleParametersChange?(value: ModelVariableType): void;
-  onChange?(value: string, option: any): void;
 }
 
-const LlmSettingItems = ({ prefix, formItemLayout = {}, onChange }: IProps) => {
+const LlmSettingItems = ({ prefix, formItemLayout = {} }: IProps) => {
   const form = Form.useFormInstance();
   const { t } = useTranslate('chat');
   const parameterOptions = Object.values(ModelVariableType).map((x) => ({
@@ -59,7 +58,6 @@ const LlmSettingItems = ({ prefix, formItemLayout = {}, onChange }: IProps) => {
           options={modelOptions}
           showSearch
           popupMatchSelectWidth={false}
-          onChange={onChange}
         />
       </Form.Item>
       <div className="border rounded-md">

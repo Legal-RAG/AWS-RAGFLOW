@@ -6,7 +6,6 @@ import {
   useSendMessageWithSse,
 } from '@/hooks/logic-hooks';
 import { Message } from '@/interfaces/database/chat';
-import i18n from '@/locales/config';
 import api from '@/utils/api';
 import { message } from 'antd';
 import trim from 'lodash/trim';
@@ -67,9 +66,6 @@ export const useSendNextMessage = () => {
       const params: Record<string, unknown> = {
         id: flowId,
       };
-      params.running_hint_text = i18n.t('flow.runningHintText', {
-        defaultValue: 'is running...🕞',
-      });
       if (message.content) {
         params.message = message.content;
         params.message_id = message.id;

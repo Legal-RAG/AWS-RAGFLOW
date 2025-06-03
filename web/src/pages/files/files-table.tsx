@@ -304,7 +304,12 @@ export function FilesTable({
         </TableBody>
       </Table>
 
-      <div className="flex items-center justify-end py-4">
+      <div className="flex items-center justify-end space-x-2 py-4">
+        <div className="flex-1 text-sm text-muted-foreground">
+          {table.getFilteredSelectedRowModel().rows.length} of {total} row(s)
+          selected.
+        </div>
+
         <div className="space-x-2">
           <RAGFlowPagination
             {...pick(pagination, 'current', 'pageSize')}

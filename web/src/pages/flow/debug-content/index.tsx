@@ -24,7 +24,6 @@ import { BeginQueryType } from '../constant';
 import { BeginQuery } from '../interface';
 import { PopoverForm } from './popover-form';
 
-import KnowledgeBaseItem from '@/components/knowledge-base-item';
 import styles from './index.less';
 
 interface IProps {
@@ -165,13 +164,6 @@ const DebugContent = ({
             <Switch></Switch>
           </Form.Item>
         ),
-        [BeginQueryType.KnowledgeBases]: (
-          <KnowledgeBaseItem
-            name={idx.toString()}
-            label={q.name || q.key}
-            required={!q.optional}
-          ></KnowledgeBaseItem>
-        ),
       };
 
       return (
@@ -190,16 +182,12 @@ const DebugContent = ({
       if (Array.isArray(value)) {
         nextValue = ``;
 
-        if (item.type === 'kb') {
-          nextValue = value.join(',');
-        } else {
-          value.forEach((x) => {
-            nextValue +=
-              x?.originFileObj instanceof File
-                ? `${x.name}\n${x.response?.data}\n----\n`
-                : `${x.url}\n${x.result}\n----\n`;
-          });
-        }
+        value.forEach((x) => {
+          nextValue +=
+            x?.originFileObj instanceof File
+              ? `${x.name}\n${x.response?.data}\n----\n`
+              : `${x.url}\n${x.result}\n----\n`;
+        });
       }
       return { ...item, value: nextValue };
     });

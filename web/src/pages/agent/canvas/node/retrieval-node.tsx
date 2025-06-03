@@ -6,12 +6,12 @@ import { Handle, NodeProps, Position } from '@xyflow/react';
 import { Avatar, Flex } from 'antd';
 import classNames from 'classnames';
 import { get } from 'lodash';
-import { memo, useMemo } from 'react';
+import { useMemo } from 'react';
 import { LeftHandleStyle, RightHandleStyle } from './handle-icon';
 import styles from './index.less';
 import NodeHeader from './node-header';
 
-function InnerRetrievalNode({
+export function RetrievalNode({
   id,
   data,
   isConnectable = true,
@@ -86,5 +86,3 @@ function InnerRetrievalNode({
     </section>
   );
 }
-
-export const RetrievalNode = memo(InnerRetrievalNode);

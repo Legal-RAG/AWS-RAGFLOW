@@ -70,39 +70,24 @@ const FlowList = () => {
       </Flex>
 
       <Spin spinning={loading}>
-        <div
-          id="scrollableDiv"
-          style={{
-            height: 'calc(100vh - 200px)',
-            overflow: 'auto',
-          }}
+        <InfiniteScroll
+          dataLength={nextList?.length ?? 0}
+          next={fetchNextPage}
+          hasMore={hasNextPage}
+          loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
+          endMessage={!!total && <Divider plain>{t('noMoreData')} 🤐</Divider>}
+          scrollableTarget="scrollableDiv"
         >
-          <InfiniteScroll
-            dataLength={nextList?.length ?? 0}
-            next={fetchNextPage}
-            hasMore={hasNextPage}
-            loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
-            endMessage={
-              !!total && <Divider plain>{t('noMoreData')} 🤐</Divider>
-            }
-            scrollableTarget="scrollableDiv"
-            scrollThreshold="200px"
-          >
-            <Flex
-              gap={'large'}
-              wrap="wrap"
-              className={styles.flowCardContainer}
-            >
-              {nextList.length > 0 ? (
-                nextList.map((item) => {
-                  return <FlowCard item={item} key={item.id}></FlowCard>;
-                })
-              ) : (
-                <Empty className={styles.knowledgeEmpty}></Empty>
-              )}
-            </Flex>
-          </InfiniteScroll>
-        </div>
+          <Flex gap={'large'} wrap="wrap" className={styles.flowCardContainer}>
+            {nextList.length > 0 ? (
+              nextList.map((item) => {
+                return <FlowCard item={item} key={item.id}></FlowCard>;
+              })
+            ) : (
+              <Empty className={styles.knowledgeEmpty}></Empty>
+            )}
+          </Flex>
+        </InfiniteScroll>
       </Spin>
       {flowSettingVisible && (
         <AgentTemplateModal

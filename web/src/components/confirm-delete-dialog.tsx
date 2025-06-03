@@ -8,6 +8,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { Trash2 } from 'lucide-react';
 import { PropsWithChildren } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -52,9 +53,10 @@ export function ConfirmDeleteDialog({
             {t('common.cancel')}
           </AlertDialogCancel>
           <AlertDialogAction
-            className="bg-text-delete-red text-text-title"
+            className="bg-colors-background-functional-solid-danger text--colors-text-neutral-strong"
             onClick={onOk}
           >
+            <Trash2 />
             {t('common.ok')}
           </AlertDialogAction>
         </AlertDialogFooter>

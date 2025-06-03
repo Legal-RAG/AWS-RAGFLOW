@@ -15,7 +15,6 @@ import PdfDrawer from '@/components/pdf-drawer';
 import { useClickDrawer } from '@/components/pdf-drawer/hooks';
 import {
   useFetchNextConversation,
-  useFetchNextDialog,
   useGetChatSearchParams,
 } from '@/hooks/chat-hooks';
 import { useFetchUserInfo } from '@/hooks/user-setting-hooks';
@@ -30,7 +29,6 @@ interface IProps {
 const ChatContainer = ({ controller }: IProps) => {
   const { conversationId } = useGetChatSearchParams();
   const { data: conversation } = useFetchNextConversation();
-  const { data: currentDialog } = useFetchNextDialog();
 
   const {
     value,
@@ -72,7 +70,7 @@ const ChatContainer = ({ controller }: IProps) => {
                     item={message}
                     nickname={userInfo.nickname}
                     avatar={userInfo.avatar}
-                    avatarDialog={currentDialog.icon}
+                    avatarDialog={conversation.avatar}
                     reference={buildMessageItemReference(
                       {
                         message: derivedMessages,

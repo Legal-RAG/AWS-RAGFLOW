@@ -2,12 +2,11 @@ import { useTheme } from '@/components/theme-provider';
 import { IRagNode } from '@/interfaces/database/flow';
 import { Handle, NodeProps, Position } from '@xyflow/react';
 import classNames from 'classnames';
-import { memo } from 'react';
 import { LeftHandleStyle, RightHandleStyle } from './handle-icon';
 import styles from './index.less';
 import NodeHeader from './node-header';
 
-function InnerRagNode({
+export function RagNode({
   id,
   data,
   isConnectable = true,
@@ -44,5 +43,3 @@ function InnerRagNode({
     </section>
   );
 }
-
-export const RagNode = memo(InnerRagNode);

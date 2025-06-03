@@ -129,7 +129,6 @@ export interface ITestingChunk {
   highlight: string;
   positions: number[][];
   docnm_kwd: string;
-  doc_type_kwd: string;
 }
 
 export interface ITestingDocument {
